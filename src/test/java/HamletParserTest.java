@@ -10,8 +10,6 @@ public class HamletParserTest {
     private HamletParser hamletParser;
     private Pattern horatio;
     private Pattern hamlet;
-    private Matcher matchHoratio;
-    private Matcher matchHamlet;
 
     @Before
     public void setUp() {
@@ -19,8 +17,13 @@ public class HamletParserTest {
         this.hamletText = hamletParser.getHamletData();
         this.horatio = Pattern.compile("Horatio", Pattern.CASE_INSENSITIVE);
         this.hamlet = Pattern.compile("Hamlet", Pattern.CASE_INSENSITIVE);
-        this.matchHoratio = horatio.matcher(this.hamletText);
-        this.matchHamlet = hamlet.matcher(this.hamletText);
+    }
+
+    @Test
+    public void testNewScript() {
+        String expected = "hamletRegex.txt";
+        String actual = this.hamletParser.makeNewScript();
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -49,11 +52,11 @@ public class HamletParserTest {
 
     @Test
     public void testFindHoratio() {
-        assertTrue(this.matchHoratio.find());
+        assertTrue(hamletParser.findHoratio());
     }
 
     @Test
     public void testFindHamlet() {
-        assertTrue(this.matchHamlet.find());
+        assertTrue(hamletParser.findHamlet());
     }
 }

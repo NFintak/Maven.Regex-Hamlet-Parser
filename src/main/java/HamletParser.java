@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.FileWriter;
 
 /**
  * Created by thook on 10/7/15.
@@ -40,6 +41,25 @@ public class HamletParser {
         }
 
         return result.toString();
+    }
+
+    public String makeNewScript() {
+        File newScript = null;
+        try {
+            newScript = new File("hamletRegex.txt");
+            if (newScript.createNewFile()) {
+                System.out.println("File created");
+            } else {
+                System.out.println(newScript.getName() + " already exists");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return newScript.getName();
+    }
+
+    public void replaceHamletAndHoratio() {
+
     }
 
     public boolean findHoratio() {
