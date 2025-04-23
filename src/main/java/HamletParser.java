@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.lang.StringBuilder;
 import java.io.FileWriter;
 
 /**
@@ -11,6 +12,7 @@ import java.io.FileWriter;
 public class HamletParser {
 
     private String hamletData;
+    private String hamletRegex;
     private Pattern horatio;
     private Pattern hamlet;
     private Matcher matchHoratio;
@@ -18,6 +20,7 @@ public class HamletParser {
 
     public HamletParser(){
         this.hamletData = loadFile();
+        this.hamletRegex = loadNewScript();
         this.horatio = Pattern.compile("Horatio", Pattern.CASE_INSENSITIVE);
         this.hamlet = Pattern.compile("Hamlet", Pattern.CASE_INSENSITIVE);
         this.matchHoratio = horatio.matcher(this.hamletData);
@@ -43,7 +46,7 @@ public class HamletParser {
         return result.toString();
     }
 
-    public String makeNewScript() {
+    public String makeNewFile() {
         File newScript = null;
         try {
             newScript = new File("hamletRegex.txt");
@@ -58,9 +61,32 @@ public class HamletParser {
         return newScript.getName();
     }
 
-    public void replaceHamletAndHoratio() {
-
+    public String loadNewScript() {
+        String newScript = this.hamletData;
+        try {
+            while (findHamlet() || findHoratio()) {
+                newScript = newScript.replaceAll(this.hamlet.toString(), "Leon")
+                        .replaceAll(this.horatio.toString(), "Tariq");
+            }
+            FileWriter writer = new FileWriter("hamletRegex.txt");
+            writer.write(newScript);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return newScript;
     }
+
+//    public void replaceHoratio(String text) {
+//        while (findHoratio()) {
+//            this.matchHoratio.appendReplacement(new StringBuffer(text), "Tariq");
+//        }
+//    }
+//
+//    public void replaceHamlet(String text) {
+//        while (findHamlet()) {
+//            this.matchHamlet.appendReplacement(new StringBuffer(text), "Leon");
+//        }
+//    }
 
     public boolean findHoratio() {
         return this.matchHoratio.find();
